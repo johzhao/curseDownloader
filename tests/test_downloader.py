@@ -1,5 +1,4 @@
 import os
-import time
 
 import src.common.logger
 
@@ -8,12 +7,11 @@ src.common.logger.config_logger(os.environ.get('LOG_CONFIG', './conf/logger.json
 from src.downloader.downloader import Downloader
 import logging
 import json
-import pytest
+import time
 
 logger = logging.getLogger(__name__)
 
 
-@pytest.mark.skip
 def test_downloader_01():
     with open('./examples/manifest.json', 'r') as manifest_file:
         data = json.load(manifest_file)
@@ -46,7 +44,7 @@ def test_downloader_02():
             name = os.path.basename(project_url)
             logger.debug('The name of project {} was {}'.format(project_id, name))
 
-            filename, data = downloader.download_mod(project_url, file_ids[index])
+            filename, data = downloader.download_mod_file(project_id, project_url, file_ids[index])
             with open('{}'.format(filename), 'wb') as mod_file:
                 mod_file.write(data)
 
