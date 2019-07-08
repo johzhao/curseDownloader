@@ -4,6 +4,7 @@ import src.common.logger
 
 src.common.logger.config_logger(os.environ.get('LOG_CONFIG', './conf/logger.json'))  # noqa: E402
 
+import argparse
 import logging
 import json
 
@@ -30,10 +31,19 @@ def download_mods(manifest_filepath: str, dest_path: str):
 
 
 def main():
+    parser = argparse.ArgumentParser()
+    parser.description = 'Download mod files from curseforge by manifest JSON file.'
+    parser.add_argument('manifest', help='The manifest JSON file.')
+    parser.add_argument('mod_folder', help='The folder which used to save the downloaded files.')
+
+    args = parser.parse_args()
+    manifest_filepath = args.manifest
+    mod_folder = args.mod_folder
+
     finished = False
     while not finished:
         try:
-            download_mods('./examples/manifest.json', './mods')
+            download_mods(manifest_filepath, mod_folder)
             finished = True
         except Exception as e:
             logger.error(e)
