@@ -1,4 +1,6 @@
 import os
+import sys
+sys.path.append(os.path.abspath('.'))       # noqa: E402
 
 import src.common.logger
 
