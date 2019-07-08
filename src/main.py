@@ -7,6 +7,7 @@ src.common.logger.config_logger(os.environ.get('LOG_CONFIG', './conf/logger.json
 import logging
 import json
 import time
+import requests.exceptions
 
 from src.database.database import Database
 from src.downloader.downloader import Downloader
@@ -26,6 +27,8 @@ def download_mod(database: Database, downloader: Downloader, project_id: str, fi
         project_url = downloader.get_project_url(project_id)
         database.set_project_url(project_id, project_url)
         download_mod(database, downloader, project_id, file_id, dest_path)
+
+    time.sleep(1)
 
 
 def download_mods(manifest_filepath: str, dest_path: str):
@@ -47,18 +50,17 @@ def download_mods(manifest_filepath: str, dest_path: str):
             except ModNotFoundException:
                 download_mod(database, downloader, project_id, file_id, dest_path)
 
-            time.sleep(1)
-
 
 def main():
     finished = False
     while not finished:
         try:
             download_mods('./examples/manifest.json', './examples/mods')
+            finished = True
+        except requests.exceptions.SSLError:
+            pass
         except Exception as e:
             logger.error(e)
-            finished = True
-        else:
             finished = True
 
 

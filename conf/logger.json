@@ -10,17 +10,16 @@
     "handlers": {
         "console": {
             "class": "logging.StreamHandler",
-            "level": "DEBUG",
+            "level": "INFO",
             "formatter": "simple",
             "stream": "ext://sys.stdout"
         },
         "fileHandler": {
-            "class": "logging.handlers.RotatingFileHandler",
+            "class": "logging.FileHandler",
             "level": "DEBUG",
             "formatter": "simple",
+            "mode": "w",
             "filename": "./download.log",
-            "maxBytes": 10485760,
-            "backupCount": 5,
             "encoding": "utf8"
         }
     },

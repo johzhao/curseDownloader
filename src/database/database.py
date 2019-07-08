@@ -40,21 +40,9 @@ class Mod(Base):
 class Database:
 
     def __init__(self):
-        self.engine = create_engine('sqlite:///curse.db', echo=True)
+        self.engine = create_engine('sqlite:///curse.db', echo=False)
         Base.metadata.create_all(self.engine)
         self.Session = sessionmaker(bind=self.engine)
-
-    def __enter__(self):
-        return self
-
-    def __exit__(self, exc_type, exc_val, exc_tb):
-        pass
-
-    def exist(self, project_id: str, file_id: str) -> bool:
-        session = self.Session()
-        mod = session.query(Mod).filter_by(project_id=project_id, file_id=file_id).first()
-        session.close()
-        return mod is not None
 
     def get_project_url(self, project_id: str) -> str:
         session = self.Session()
